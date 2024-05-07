@@ -23,13 +23,19 @@ autocmd vimenter * ++nested colorscheme solarized8  " Sets the color scheme to '
 
 
 
-" Check if running on Unix (Linux included)
 if has('unix')
-     " Get the user's home directory
     let user_home = expand('~')
-    " Construct the full path to the Conda environment
-    let conda_env_path = user_home . '/miniconda3'
-    let g:python3_host_prog = conda_env_path . '/bin/python'
+    let conda_paths = [user_home . '/anaconda3', user_home . '/miniconda3']
+    let g:python3_host_prog = ''
+    for conda_path in conda_paths
+        if isdirectory(conda_path)
+            let g:python3_host_prog = conda_path . '/bin/python'
+            break
+        endif
+    endfor
+    if g:python3_host_prog == ''
+        let g:python3_host_prog = '/usr/bin/python3'
+    endif
 endif
 
 " let g:python3_host_prog = '/home/sergeyadmin/miniconda3/bin/python'
