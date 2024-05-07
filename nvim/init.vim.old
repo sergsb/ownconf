@@ -1,0 +1,110 @@
+set clipboard=unnamedplus  " use the clipboards of vim and win
+"set paste               " Paste from a windows or from vim
+set go+=a               " Visual selection automatically copied to the clipboard
+
+set tw=79              " set the tab width
+set whichwrap+=<,>,h,l
+
+set nocp
+filetype off     
+colorscheme darkblue
+set nu
+"отображение номеров строк"
+set autoindent
+set nrformats=
+" автозапись при переключении"
+syntax on
+set encoding=utf-8 "Ставит кодировку UTF-8
+set fileformats=unix,dos,mac " Recognize all popular end-of-line formats
+"подсветка синтаксиса"n 'neoclide/coc.nvim'
+filetype plugin indent on
+" show existing tab with 4 spaces width
+set tabstop=4
+" when indenting with '>', use 4 spaces width
+set shiftwidth=4
+" On pressing tab, insert 4 spaces
+set mouse=a
+" пробелы вместо табов
+set expandtab
+" терминал у нас темный
+set background=dark
+"
+call plug#begin()
+" The default plugin directory will be as follows:
+"   - Vim (Linux/macOS): '~/.vim/plugged'
+"   - Vim (Windows): '~/vimfiles/plugged'
+"   - Neovim (Linux/macOS/Windows): stdpath('data') . '/plugged'
+" You can specify a custom plugin directory by passing it as the argument
+"   - e.g. `call plug#begin('~/.vim/plugged')`
+"   - Avoid using standard Vim directory names like 'plugin'
+
+" Make sure you use single quotes
+
+" Any valid git URL is allowed
+"Plug 'https://github.com/junegunn/vim-github-dashboard.git'
+ "Plug 'ycm-core/YouCompleteMe'
+ Plug 'scrooloose/nerdtree' "File tree
+ Plug '907th/vim-auto-save' "Auto save plugin
+ Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins'} "Python syntax highlighting
+ Plug 'kmonad/kmonad-vim'
+ Plug 'ziglang/zig.vim'
+ Plug 'rust-lang/rust.vim'
+ Plug 'Yggdroot/indentLine'
+ Plug 'tpope/vim-surround'
+ Plug 'tpope/vim-commentary'
+ Plug 'farmergreg/vim-lastplace' 
+ Plug 'tpope/vim-sensible'
+ Plug 'dinhhuy258/vim-local-history', {'branch': 'master', 'do': ':UpdateRemotePlugins'}
+ Plug 'Vimjas/vim-python-pep8-indent'
+" Plug 'vim-syntastic/syntastic'
+ Plug 'github/copilot.vim'
+ Plug 'christoomey/vim-tmux-navigator'
+call plug#end()
+" Triger `autoread` when files changes on disk
+" https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim/383044#383044
+" https://vi.stackexchange.com/questions/13692/prevent-focusgained-autocmd-running-in-command-line-editing-mode
+autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
+            \ if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
+
+" Notification after file change
+" https://vi.stackexchange.com/questions/13091/autocmd-event-for-autoread
+autocmd FileChangedShellPost *
+  \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
+
+" Гибридный режим отображения строк
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if mode() != "i" | set rnu   | endif
+  autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu | set nornu | endif
+augroup END
+" Ремап двоеточия
+" Удобный выход в нормальный режим
+imap fj <esc>
+imap jf <esc>
+
+set wildmenu
+set wildmode=full
+nnoremap <F5> :LocalHistoryToggle<CR>
+set showcmd             " Show (partial) command in status line.
+set showmatch           " Show matching brackets.
+" use system clipboard
+" https://anuragpeshne.github.io/essays/vim/7.html
+" noremap y "*y
+" noremap yy "*yy
+" noremap Y "*y$
+" noremap x "*x
+" noremap dd "*dd
+" noremap D "*D
+"   
+"Searching
+set incsearch          " Incremental search
+set ignorecase         " Search case insensitive
+set smartcase          " Search case sensitive if query has uppercase characters
+set hlsearch           " Highlight search results
+"Buffer 
+set hidden             " Hide buffers instead of closing them
+set autoread           " Automatically read files when changed from the outside
+nnoremap <TAB> :bnext<CR>  " Use Tab to navigate through buffers
+nnoremap <S-TAB> :bprevious<CR> " Shift-Tab for previous buffer
+"History
+set history=10000      " Store 1000 commands in history
